@@ -27,15 +27,20 @@ namespace MyJwtAuthApp.Controllers
         [HttpPost("register")]
         public IActionResult Register(User user)
         {
-            if (_context.Users.Any(u => u.Email == user.Email)) // Changed Username to Email
+            if (_context.Users.Any(u => u.Email == user.Email))
                 return BadRequest("User already exists");
 
-            // Hashing the password before storing
+            // Hash the password
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
+
             _context.Users.Add(user);
             _context.SaveChanges();
-            return Ok("Registered successfully");
+
+            // Generate token after successful registration
+            var token = GenerateJwtToken(user);
+            return Ok(new { token });
         }
+
 
         [HttpPost("login")]
         public IActionResult Login(LoginDto login)
