@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using MyJwtAuthApp.Data;
 using MyJwtAuthApp.Models;
-using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace MyJwtAuthApp.Controllers
-{
+{   [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class StudentController : ControllerBase
